@@ -42,15 +42,17 @@ class ProjectController extends Controller
 
 
         // validate the user input
-        $val_data = $request->validate([
-            'type_id' => 'nullable|exists:types,id',
-            'title' => 'required|bail|min:3|max:150',
-            'slug' => 'min:3|max:50',
-            'description' => 'nullable|max:350',
-            'cover_image' => 'nullable|image|max:500',
-            'website_link' => 'nullable|url',
-            'github_link' => 'nullable|url'
-        ]);
+        // $val_data = $request->validate([
+        //     'type_id' => 'nullable|exists:types,id',
+        //     'title' => 'required|bail|min:3|max:150',
+        //     'slug' => 'min:3|max:50',
+        //     'description' => 'nullable|max:350',
+        //     'cover_image' => 'nullable|image|max:500',
+        //     'website_link' => 'nullable|url',
+        //     'github_link' => 'nullable|url'
+        // ]);
+
+        $val_data = $request->validated();
 
 
 
