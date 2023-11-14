@@ -21,6 +21,21 @@
                     <div class="card-body">
                         <p class="card-text">{{ $project->description }}</p>
                         <p><strong>Type: </strong>{{ $project->type?->name ?? 'Uncategorized' }}</p>  {{-- null safe operator --}}  
+                       
+                        <p><strong>Technologies used:</strong></p>
+
+                        <div class="d-flex">
+                            <ul class="d-flex gap-2 list-unstyled">
+                                @forelse ($project->technologies as $technology)
+                                    <li class="badge bg-success">
+                                        <i class="fa-solid fa-code"></i> {{ $technology->name }}
+                                    </li>
+                                @empty
+                                    <li class="badge bg-secondary"><i class="fa-regular fa-file"></i> None/Others</li>
+                                @endforelse
+                            </ul>
+                        </div>
+                        
                         <a href="{{ route('admin.projects.edit', $project->slug) }}" class="btn btn-primary">Edit</a>
                         <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Back to List</a>
                     </div>

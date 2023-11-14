@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Type;
 
 class Project extends Model
@@ -27,4 +28,5 @@ class Project extends Model
     {
         return $this->belongsToMany(Technology::class);
     }
+    
 }

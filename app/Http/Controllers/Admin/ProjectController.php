@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Type;
+use App\Models\Technology;
 
 
 
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     {
        
         $types = Type::all();
-        return view('admin.posts.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.posts.create', compact('types', 'technologies'));
     }
 
     /**
@@ -71,7 +73,9 @@ class ProjectController extends Controller
 
 
         // create the new article
-        Project::create($val_data);
+        $newProject = Project::create($val_data);
+
+        $newProject->technologies()->attach($request->technologies);
 
         return to_route('admin.projects.index')->with('message', 'Post Created successfully');
     }
@@ -92,7 +96,8 @@ class ProjectController extends Controller
         $page_title = 'Edit';
 
         $types = Type::all();
-        return view('admin.posts.edit', compact('project','types'));
+        $technologies = Technology::all();
+        return view('admin.posts.edit', compact('project','types','technologies'));
     }
 
     /**
@@ -123,7 +128,10 @@ class ProjectController extends Controller
         }
 
         // dd([$request->toArray(), $project->toArray(), $val_data]);
-
+          
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($request->technologies); // (o valData['technologies'])
+        }
         //update
         $project->update($val_data);
 
@@ -158,6 +166,8 @@ class ProjectController extends Controller
     public function forceDestroy($slug)
     {
         $project = Project::withTrashed()->where('slug', '=', $slug)->first();
+
+        $project->technologies()->detach();
 
         $project->forceDelete();
 

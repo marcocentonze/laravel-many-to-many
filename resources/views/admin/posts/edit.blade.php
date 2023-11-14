@@ -72,6 +72,28 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="technologies" class="form-label"><strong>Technologies Used</strong></label>
+                        <select multiple class="form-select form-select" name="technologies[]" id="technologies">
+                            <option disabled>Select Technologies used</option>
+                            @foreach ($technologies as $technology)
+                                @if ($errors->any())
+                                    <option value="{{ $technology->id }}" 
+                                        {{ in_array($technology->id, old('technologies', [])) ? 'selected' : '' }}>
+                                        {{ $technology->name }}</option>
+                                @else
+                                    <option value="{{ $technology->id }}" 
+                                        {{ $project->technologies->contains($technology) ? 'selected' : '' }}>
+                                        {{ $technology->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('technologies')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+
+                    <div class="mb-3">
                         <label for="github_link" class="form-label">Edit your github Link</label>
                         <input type="url" name="github_link" id="github_link"
                             class="form-control" placeholder="Edit github project link"

@@ -41,7 +41,8 @@
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" name="description" id="description" rows="3"></textarea>
                 </div>
-
+                      
+                {{-- types --}}
                    <div class="mb-3">
                         <label for="type_id" class="form-label">Type</label>
                         <select class="form-select form-select @error('type_id') is-invalid @enderror" name="type_id"
@@ -59,6 +60,33 @@
                         @error('type_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
+                    </div>
+                      
+                    {{-- technologies --}}
+                    <div class="mb-3">
+
+                        <label for="technologies" class="form-label"><strong>Technologies Used</strong></label>
+                    
+                       
+                            <select class="form-select" multiple name="technologies[]" id="technologies">
+                    
+                                <option disabled>Select Technologies used</option>
+                    
+                                @foreach ($technologies as $technology)
+                                    <option value="{{ $technology->id }}"
+                                       
+                                        {{ in_array($technology->id, old('technologies', [])) ? 'selected' : '' }}>
+                    
+                                    {{ $technology->name }} ID: {{ $technology->id }}</option>
+                    
+                                @endforeach
+                    
+                            </select>
+                    
+                            @error('technologies')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                    
                     </div>
 
                 <div class="mb-3">
