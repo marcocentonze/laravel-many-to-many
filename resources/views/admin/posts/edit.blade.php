@@ -41,7 +41,7 @@
                         @enderror
                     </div>
 
-                  
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Project Description</label>
                         <textarea class="form-control" name="description" id="description" rows="5"
@@ -59,7 +59,7 @@
                             <option selected disabled>Select a Type</option>
                             <option value="">Uncategorized</option>
                             @foreach ($types as $type)
-                                <option value="{{ $type->id }}" 
+                                <option value="{{ $type->id }}"
                                     {{ $type->id == old('type_id', $project->type_id) ? 'selected' : '' }}>
                                     {{ $type->name }}
                                 </option>
@@ -73,46 +73,49 @@
 
                     <div class="mb-3">
                         <label for="technologies" class="form-label"><strong>Technologies Used</strong></label>
-                        <select multiple class="form-select form-select" name="technologies[]" id="technologies">
-                            <option disabled>Select Technologies used</option>
+                        <div id="technologies">
                             @foreach ($technologies as $technology)
-                                @if ($errors->any())
-                                    <option value="{{ $technology->id }}" 
-                                        {{ in_array($technology->id, old('technologies', [])) ? 'selected' : '' }}>
-                                        {{ $technology->name }}</option>
-                                @else
-                                    <option value="{{ $technology->id }}" 
-                                        {{ $project->technologies->contains($technology) ? 'selected' : '' }}>
-                                        {{ $technology->name }}</option>
-                                @endif
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="technologies[]"
+                                        id="tech-{{ $technology->id }}" value="{{ $technology->id }}"
+                                        @if ($errors->any()) {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}
+                                           @else
+                                               {{ $project->technologies->contains($technology) ? 'checked' : '' }} @endif>
+                                    <label class="form-check-label" for="tech-{{ $technology->id }}">
+                                        {{ $technology->name }}
+                                    </label>
+                                </div>
                             @endforeach
-                        </select>
-                        @error('technologies')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
+                        </div>
                     </div>
 
 
-                    <div class="mb-3">
-                        <label for="github_link" class="form-label">Edit your github Link</label>
-                        <input type="url" name="github_link" id="github_link"
-                            class="form-control" placeholder="Edit github project link"
-                            aria-describedby="helpId" value="{{ old('github_link', $project->github_link) }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="website_link" class="form-label">Edit your website Link</label>
-                        <input type="url" name="website_link" id="website_link"
-                            class="form-control" placeholder="Edit website project link"
-                            aria-describedby="helpId" value="{{ old('website_link', $project->website_link) }}">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Update Project</button>
-                    <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Cancel</a>
-
-                </form>
+                    @error('technologies')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
             </div>
+
+
+            <div class="mb-3 ps-3">
+                <label for="github_link" class="form-label">Edit your github Link</label>
+                <input type="url" name="github_link" id="github_link" class="form-control"
+                    placeholder="Edit github project link" aria-describedby="helpId"
+                    value="{{ old('github_link', $project->github_link) }}">
+            </div>
+
+            <div class="mb-3 ps-3">
+                <label for="website_link" class="form-label">Edit your website Link</label>
+                <input type="url" name="website_link" id="website_link" class="form-control"
+                    placeholder="Edit website project link" aria-describedby="helpId"
+                    value="{{ old('website_link', $project->website_link) }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Project</button>
+            <a href="{{ route('admin.projects.index') }}" class="btn btn-secondary">Cancel</a>
+
+            </form>
         </div>
+    </div>
     </div>
 
 @endsection
